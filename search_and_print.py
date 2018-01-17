@@ -9,7 +9,7 @@ if __name__ == "__main__":
 	api = tweepy.API(auth)
 
 	#Searching, where q is the search term. .items(5) restricts to only returning 5 results
-	search_results = tweepy.Cursor(api, q="Python").items(5)
+	search_results = tweepy.Cursor(api.search, q="Python").items(5)
 	for result in search_results:
 		print(result.text)
 
