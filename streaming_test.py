@@ -5,9 +5,10 @@ from tweepy import OAuthHandler
 import config
 import json
 
-class twitter_listener	(StreamListener):
+class twitter_listener(StreamListener):
 	def on_data(self, data):
-		print(data.text)
+		j = json.loads(data)
+		print(j["text"])
 		return True
 
 	def on_error(self, status):
