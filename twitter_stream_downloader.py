@@ -11,7 +11,7 @@ class twitter_listener(StreamListener):
 
     def on_data(self, data):
     	try:
-    		json_data = json.loads(data)
+    		json_data = json.loads(data)x
     		self.counter += 1
     		with open('python.json', 'a') as 
 
