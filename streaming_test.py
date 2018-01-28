@@ -18,8 +18,9 @@ if __name__ == "__main__":
 	auth = OAuthHandler(config.consumer_key, config.consumer_secret)
 	auth.set_access_token(config.access_token, config.access_secret)
 	api = tweepy.API(auth)
-	twitter_stream = Stream(auth, twitter_listener())
+
+	myStream = Stream(auth = api.auth, listener=twitter_listener())
 	try:
-		twitter_stream.sample()
+		myStream.sample()
 	except Exception as e:
 		print(e.__doc__)
