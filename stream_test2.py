@@ -44,9 +44,9 @@ if __name__ == "__main__":
 	api = tweepy.API(auth)
 
 
-	myStream = Stream(auth = api.auth, listener=MyStreamListener(num_tweets=10))
+	myStream = Stream(auth = api.auth, listener=MyStreamListener(num_tweets=1000))
 	try:
-		myStream.sample()
+		myStream.filter(track=['trump'])
 	except Exception as e:
 		print(e.__doc__)
 #	myStream.filter(track=['trump'], async=True)
