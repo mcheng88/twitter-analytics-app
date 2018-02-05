@@ -61,15 +61,18 @@ class TwitterMain():
 
 		self.num_tweets = tweetsToGet
 		self.retweet_count = retweetNum
+		self.stats = stats()
 
 	def get_streaming_data(self):
 		myStream = Stream(auth = self.api.auth, listener=MyStreamListener(self.num_tweets,
 		self.retweet_count))
 		try:
-		#	myStream.sample()
-			myStream.filter(track=['trump'])
+			myStream.sample()
+		#	myStream.filter(track=['trump'])
 		except Exception as e:
 			print(e.__doc__)
+
+		print(top_tweets)
 
 	def get_trends(self):
 		"""
@@ -117,10 +120,6 @@ class stats():
 if __name__ == "__main__":
 	num_tweets_to_grab = 10
 	retweet_count = 10000
-
-	
-
-
 	twitMain = TwitterMain(num_tweets_to_grab,retweet_count)
 	twitMain.get_streaming_data()
 	twitMain.get_trends()

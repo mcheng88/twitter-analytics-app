@@ -44,7 +44,7 @@ if __name__ == "__main__":
 	api = tweepy.API(auth)
 
 
-	myStream = Stream(auth = api.auth, listener=MyStreamListener(num_tweets=1000))
+	myStream = Stream(auth = api.auth, listener=MyStreamListener(num_tweets=10))
 	try:
 	#	myStream.sample()
 		myStream.filter(track=['trump'])
