@@ -7,6 +7,40 @@ import json
 
 
 """
+This is the listener class, will update with statistics and such
+"""
+class MyStreamListener(tweepy.StreamListener):
+
+	# initializes the listener with a counter. 
+	def __init__(self, num_tweets):
+		self.counter = 0
+		self.num_tweets = num_tweets
+
+
+	# on data, prints tweet 
+	def on_data(self, data):
+		try:
+			j = json.loads(data)
+			print(j["text"])
+			self.counter += 1
+			if self.counter == self.num_tweets:
+				return False
+
+			return True
+		except:
+			pass
+
+	# prints out tweet. 
+#    def on_status(self, status):
+#        print(status.text)
+#        return True
+
+	# on error, prints the error text.
+	def on_error(self, status):
+		print(status.text)
+		return False
+
+"""
 What if I set it up so that you could change the country code or the streaming search?
 """
 class TwitterMain():
@@ -45,12 +79,8 @@ class TwitterMain():
 			trend_tweets=[]
 			trend_tweets.append(trend['name'])
 			tt = tweepy.Cursor(self.api.search, q = trend['name']).items(3)
-         
-            for t in tt:
-                
-                trend_tweets.append(t.text)
+			for t in tt:
+				trend_tweets.append(t.text)
                 #print(tweet_html)
- 
-            trend_data.append(tuple(trend_tweets))
- 
-        print(trend_data)
+			trend_data.append(tuple(trend_tweets))
+		print(trend_data)
