@@ -14,7 +14,7 @@ class MyStreamListener(tweepy.StreamListener):
 		self.num_tweets = num_tweets
 
 
-	# on data, prints tweet
+	# on data, prints tweet 
 	def on_data(self, data):
 		try:
 			j = json.loads(data)
@@ -46,7 +46,7 @@ if __name__ == "__main__":
 
 	myStream = Stream(auth = api.auth, listener=MyStreamListener(num_tweets=1000))
 	try:
+	#	myStream.sample()
 		myStream.filter(track=['trump'])
 	except Exception as e:
 		print(e.__doc__)
-#	myStream.filter(track=['trump'], async=True)
