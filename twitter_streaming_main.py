@@ -4,18 +4,21 @@ from tweepy import StreamListener
 from tweepy import Stream
 import config
 import json
+import sqlite3
 
-
+db = "../twit_data.db"
 """
 This is the listener class, will update with statistics and such
 """
 class MyStreamListener(tweepy.StreamListener):
 
 	# initializes the listener with a counter. 
-	def __init__(self, num_tweets_to_grab, retweet_count):
+	def __init__(self, num_tweets_to_grab, stats, get_tweet_html, retweet_count):
 		self.counter = 0
 		self.num_tweets_to_grab = num_tweets_to_grab
 		self.retweet_count = retweet_count
+		self.stats = stats
+		self.get_tweet_html = get_tweet_html
 
 	# on data, prints tweet 
 	def on_data(self, data):
@@ -51,7 +54,7 @@ class MyStreamListener(tweepy.StreamListener):
 What if I set it up so that you could change the country code or the streaming search?
 """
 class TwitterMain():
-	def __init__(self, num_tweets_to_grab, retweet_count):
+	def __init__(self, num_tweets_to_grab, retweet_count, conn):
 		self.auth = OAuthHandler(config.consumer_key, config.consumer_secret)
 		self.auth.set_access_token(config.access_token, config.access_secret)
 
@@ -59,9 +62,12 @@ class TwitterMain():
 		self.num_tweets_to_grab = num_tweets_to_grab
 		self.retweet_count = retweet_count
 		self.stats = stats()
+		self.conn = conn
+		self.c = self.conn.cursor()
 
 	def get_streaming_data(self):
-		myStream = Stream(auth = self.api.auth, listener=MyStreamListener(num_tweets_to_grab=self.num_tweets_to_grab, retweet_count=self.retweet_count))
+		myStream = Stream(auth = self.api.auth, listener=MyStreamListener(num_tweets_to_grab=self.num_tweets_to_grab, retweet_count=self.retweet_count, 
+			stats = self.stats, get_tweet_html = self.get_tweet_html ))
 		try:
 			myStream.sample()
 		#	myStream.filter(track=['trump'])
@@ -69,7 +75,12 @@ class TwitterMain():
 			print(e.__doc__)
 
 		top_tweets = self.stats.get_stats()
-		print(top_tweets)
+		print(len(top_tweets))
+
+		for t in top_tweets:
+			self.c.execute("INSERT INTO twit_data VALUES (?, DATETIME('now'))", (t,))
+
+		self.conn.commit()
 
 	def get_trends(self):
 		"""
@@ -92,7 +103,10 @@ class TwitterMain():
 				trend_tweets.append(self.get_tweet_html(t.id))
                 #print(tweet_html)
 			trend_data.append(tuple(trend_tweets))
-		print(trend_data)
+		# print(trend_data)
+		self.c.executemany("INSERT INTO trend_data VALUES (?,?,?,?, DATETIME('now'))", trend_data)
+		self.conn.commit()
+
 
 	def get_tweet_html(self,id):
 		oembed = self.api.get_oembed(id=id, hide_media = True, hide_thread = True)
@@ -115,8 +129,16 @@ class stats():
 
 
 if __name__ == "__main__":
-	num_tweets_to_grab = 10
+	num_tweets_to_grab = 1000
 	retweet_count = 10000
-	twitMain = TwitterMain(num_tweets_to_grab,retweet_count)
-	twitMain.get_streaming_data()
-	twitMain.get_trends()
+	try:
+		conn = sqlite3.connect(db)
+		twitMain = TwitterMain(num_tweets_to_grab,retweet_count, conn)
+		twitMain.get_streaming_data()
+		twitMain.get_trends()
+
+	except Exception as e:
+		print(e.__doc__)
+
+	finally:
+		conn.close()
