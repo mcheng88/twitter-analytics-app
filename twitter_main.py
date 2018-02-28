@@ -134,7 +134,7 @@ class stats():
         return self.lang, self.top_lang, self.top_tweets
 
 if __name__ == "__main__":
-    num_tweets_to_grab = 1000
+    num_tweets_to_grab = 100
     retweet_count = 1000
     try:
         conn = sqlite3.connect(db)        
@@ -148,4 +148,3 @@ if __name__ == "__main__":
     finally:
         conn.close()
     #pdb.set_trace()
-
