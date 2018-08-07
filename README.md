@@ -18,3 +18,5 @@ Moving further from the original idea, due to some ideas stemmed from the clout 
 - https://medium.com/deep-writing/how-to-write-with-artificial-intelligence-45747ed073c
 - https://github.com/hunkim/word-rnn-tensorflow
 - https://medium.com/mlreview/a-simple-deep-learning-model-for-stock-price-prediction-using-tensorflow-30505541d877
+
+I will potentially be restarting this project in a bit. 
