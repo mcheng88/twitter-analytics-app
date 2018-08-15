@@ -1,7 +1,7 @@
- twitter-analytics-app
+# twitter-analytics-app
 Building a Twitter Analytics App with Python. 
 
-Thoughts on basic functionality:
+#### Thoughts on basic functionality:
 - Tracking trending tweets
 - Tracking based on location - NYC or USA. 
 
@@ -14,11 +14,15 @@ Moving further from the original idea, due to some ideas stemmed from the clout 
 - https://github.com/hunkim/word-rnn-tensorflow
 - https://medium.com/mlreview/a-simple-deep-learning-model-for-stock-price-prediction-using-tensorflow-30505541d877
 
-I will potentially be restarting this project in a bit. 
+I will potentially be restarting this project in a bit. \[8-15-18]: Definitely restarting this once back in NYC. 
 
-What if you could track trends before they became trends? The ability to capitalize off of social media would be actually automated from here on out. 
+### What if you could track trends before they became trends? 
+The ability to capitalize off of social media would be actually automated from here on out. 
+
 This project will be a deep dive into the world of analytics and trend prediction. 
+
 I'll be starting off without using AI, and if there is a potential in that field, I will jump into it.
+
 First off though, I'll be building code based off the first two papers linked above. 
 
 ToDo:
